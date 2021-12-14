@@ -1,31 +1,38 @@
 package code.advent.day4.part1;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Board {
 
-    List<String[]> rows = new ArrayList<>();
-    List<Integer> markedRowCounter = new ArrayList<>();
-    List<Integer> markedColumnCounter = new ArrayList<>();
+    private int boardId;
+    private List<List<Integer>> rows = new ArrayList<>();
+    private List<Integer> markedRowCounter = new ArrayList<>();
+    private List<Integer> markedColumnCounter = new ArrayList<>();
+    private List<Integer> calledNumbers = new ArrayList<>();
+    private int countNeededForBingo = rows.size();
+
+    public Board(int boardId) {
+        this.boardId = boardId;
+    }
+
 
     public void addRow(String line) {
-//            List<Integer> row = Arrays.stream(s.split(" ")).map(Integer::parseInt).collect(Collectors.toList());
-//            rows.add(row);
-        rows.add(line.split("\\s+"));
+        List<Integer> row = Arrays.stream(line.split("\\s+"))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+        rows.add(row);
+        countNeededForBingo = rows.size();
         markedRowCounter.add(0);
         markedColumnCounter.add(0);
     }
 
-    public boolean numberCalled(String calledNumber) {
-        System.out.println("number called " + calledNumber);
+    public boolean numberCalled(Integer calledNumber) {
+        calledNumbers.add(calledNumber);
         return rows.stream().map(row -> {
             boolean bingo = false;
-            for (int i = 0; i < row.length; i++) {
-                if (calledNumber.equals(row[i])) {
-                    System.out.println("We matched number " + calledNumber);
+            for (int i = 0; i < row.size(); i++) {
+                if (calledNumber.equals(row.get(i))) {
                     int index = rows.indexOf(row);
                     Integer rowCounter = markedRowCounter.get(index);
                     rowCounter++;
@@ -35,15 +42,10 @@ public class Board {
                     columnCounter++;
                     markedColumnCounter.set(i, columnCounter);
 
-                    System.out.println("row counter: " + markedRowCounter);
-                    System.out.println("column counter: " + markedColumnCounter);
-                    int countNeededForBingo = rows.size();
-
-                    System.out.println(rowCounter + " " + countNeededForBingo + " " + columnCounter + " " + rows.size());
-
-                    bingo = rowCounter >= countNeededForBingo || columnCounter >= rows.size();
+                    bingo = rowCounter >= countNeededForBingo || columnCounter >= countNeededForBingo;
                     if (bingo) {
                         System.out.println("BINGO");
+                        System.out.println("Winning board: " + this.toString());
                     }
                 }
             }
@@ -52,4 +54,20 @@ public class Board {
 
     }
 
+    public List<Integer> getUncalledNumbers() {
+        return rows.stream().flatMap(Collection::stream)
+                .filter(i -> !calledNumbers.contains(i))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "boardId=" + boardId +
+                ", rows=" + rows.stream().map(Objects::toString).collect(Collectors.joining(", ")) +
+                ", markedRowCounter=" + markedRowCounter +
+                ", markedColumnCounter=" + markedColumnCounter +
+                ", calledNumbers=" + calledNumbers +
+                '}';
+    }
 }

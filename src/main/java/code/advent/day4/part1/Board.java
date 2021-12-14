@@ -34,13 +34,9 @@ public class Board {
             for (int i = 0; i < row.size(); i++) {
                 if (calledNumber.equals(row.get(i))) {
                     int index = rows.indexOf(row);
-                    Integer rowCounter = markedRowCounter.get(index);
-                    rowCounter++;
-                    markedRowCounter.set(index, rowCounter);
+                    Integer rowCounter = markNumberForRow(index);
 
-                    Integer columnCounter = markedColumnCounter.get(i);
-                    columnCounter++;
-                    markedColumnCounter.set(i, columnCounter);
+                    Integer columnCounter = markCounterForColumn(i);
 
                     bingo = rowCounter >= countNeededForBingo || columnCounter >= countNeededForBingo;
                     if (bingo) {
@@ -50,8 +46,22 @@ public class Board {
                 }
             }
             return bingo;
-        }).anyMatch(x -> x.equals(true));
+        }).anyMatch(bingo -> bingo.equals(true));
 
+    }
+
+    private Integer markCounterForColumn(int i) {
+        Integer columnCounter = markedColumnCounter.get(i);
+        columnCounter++;
+        markedColumnCounter.set(i, columnCounter);
+        return columnCounter;
+    }
+
+    private Integer markNumberForRow(int index) {
+        Integer rowCounter = markedRowCounter.get(index);
+        rowCounter++;
+        markedRowCounter.set(index, rowCounter);
+        return rowCounter;
     }
 
     public List<Integer> getUncalledNumbers() {

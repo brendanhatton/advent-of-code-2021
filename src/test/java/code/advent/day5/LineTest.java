@@ -1,5 +1,6 @@
-package code.advent.day5.part1;
+package code.advent.day5;
 
+import code.advent.day5.Line;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

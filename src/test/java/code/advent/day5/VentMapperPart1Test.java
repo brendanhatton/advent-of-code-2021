@@ -1,12 +1,13 @@
-package code.advent.day5.part1;
+package code.advent.day5;
 
+import code.advent.day5.Line;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class VentMapperTest {
+class VentMapperPart1Test {
 
     @Test
     void shouldLoadLinesFromExampleFile() throws FileNotFoundException {
@@ -22,8 +23,8 @@ class VentMapperTest {
     @Test
     void shouldGenerateMapFromExampleFile() throws FileNotFoundException {
         VentMapper mapper = new VentMapper("/day5-part1-lines-example.txt");
-        assertEquals(9, mapper.getVentMap().length);
-        assertEquals(9, mapper.getVentMap()[0].length);
+        assertEquals(10, mapper.getVentMap().length);
+        assertEquals(10, mapper.getVentMap()[0].length);
     }
 
 

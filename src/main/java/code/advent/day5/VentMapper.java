@@ -1,4 +1,4 @@
-package code.advent.day5.part1;
+package code.advent.day5;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,7 +36,7 @@ public class VentMapper {
                     maxY = line.getYend();
                 }
             }
-            ventMap = new int[maxX+1][maxY+1];
+            ventMap = new int[maxX + 1][maxY + 1];
 
         }
     }
@@ -48,7 +48,7 @@ public class VentMapper {
                 int lower = line.getXstart() < line.getXend() ? line.getXstart() : line.getXend();
                 int higher = line.getXstart() < line.getXend() ? line.getXend() : line.getXstart();
                 for (int i = lower; i <= higher; i++) {
-                    System.out.println("incrementing ["+i+"]["+line.getYstart()+"]");
+                    System.out.println("incrementing [" + i + "][" + line.getYstart() + "]");
                     ventMap[i][line.getYstart()]++;
                 }
 
@@ -56,12 +56,27 @@ public class VentMapper {
                 int lower = line.getYstart() < line.getYend() ? line.getYstart() : line.getYend();
                 int higher = line.getYstart() < line.getYend() ? line.getYend() : line.getYstart();
                 for (int i = lower; i <= higher; i++) {
-                    System.out.println("incrementing ["+line.getXstart()+"]["+i+"]");
+                    System.out.println("incrementing [" + line.getXstart() + "][" + i + "]");
                     ventMap[line.getXstart()][i]++;
                 }
 
             }
 
+        });
+        return ventMap;
+    }
+
+    public int[][] markDiagonalLinesOnVentMap() {
+        lines.stream().filter(Line::isDiagonal).forEach(line -> {
+            System.out.println("Mapping diagonal line " + line);
+            int xAxisLength = line.getXend() - line.getXstart();
+            int xAxisIncrementor = xAxisLength / Math.abs(xAxisLength);
+            int yAxisLength = line.getYend() - line.getYstart();
+            int yAxisIncrementor = yAxisLength / Math.abs(yAxisLength);
+            for (int i = 0; i <= Math.abs(xAxisLength); i++) {
+                System.out.println("incrementing [" + (line.getXstart() + i * xAxisIncrementor) + "][" + (line.getYstart() + i * yAxisIncrementor) + "]");
+                ventMap[line.getXstart() + i * xAxisIncrementor][line.getYstart() + i * yAxisIncrementor]++;
+            }
         });
         return ventMap;
     }
@@ -74,7 +89,6 @@ public class VentMapper {
                                 .count())
                 .reduce(Long::sum).get();
     }
-
 
 
     public int[][] getVentMap() {

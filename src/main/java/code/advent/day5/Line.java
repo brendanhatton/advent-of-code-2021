@@ -1,4 +1,4 @@
-package code.advent.day5.part1;
+package code.advent.day5;
 
 import java.util.Arrays;
 
@@ -41,6 +41,10 @@ public class Line {
 
     public boolean isStraight() {
         return xStart == xEnd || yStart == yEnd;
+    }
+
+    public boolean isDiagonal() {
+        return !isStraight();
     }
 
     @Override

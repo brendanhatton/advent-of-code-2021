@@ -27,8 +27,8 @@ internal class CrabSubmarineTest {
     }
 
     private fun calculateMinimumDistance(positions: List<Int>): Pair<Int, Long> {
-        val min = positions.min()!!
-        val max = positions.max()!!
+        val min = positions.minOrNull()!!
+        val max = positions.maxOrNull()!!
         var minDistance: Pair<Int, Long> = Pair(-1, Long.MAX_VALUE)
 
         for (i in min..max) {

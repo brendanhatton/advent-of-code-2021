@@ -19,7 +19,7 @@ internal class SmokeLowPointTest {
 
                 //find low points
                 val lowPoints = identifyLowPoints(inputs)
-                val totalRiskScore = lowPoints.map { it + 1 }.sum()
+                val totalRiskScore = lowPoints.sumOf { it + 1 }
                 assertEquals(512, totalRiskScore)
             }
         } catch (e: Exception) {

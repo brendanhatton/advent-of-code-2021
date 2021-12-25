@@ -1,4 +1,4 @@
-package code.advent.day6.part1
+package code.advent.day8.part1
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test

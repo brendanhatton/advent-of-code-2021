@@ -30,6 +30,45 @@ class Packet(source: String) {
         return version + packets.sumOf { it.getVersionSum() }
     }
 
+    fun getPacketValue(): Long {
+        return when(typeId) {
+            0 -> valueBySum()
+            1 -> valueByProduct()
+            2 -> valueByMin()
+            3 -> valueByMax()
+            4 -> value!!
+            5 -> valueByGreaterThan()
+            6 -> valueByLessThan()
+            7 -> valueByEquality()
+            else -> throw RuntimeException("Unknown type id $typeId")
+
+        }
+    }
+
+    private fun valueBySum(): Long {
+//        return packets.sumOf { getPacketValue() }
+        return packets.sumOf { it.getPacketValue() }
+        return packets.map { it.getPacketValue() }.sum()
+    }
+    private fun valueByProduct(): Long {
+        return packets.map { it.getPacketValue() }.reduce { acc, i -> acc * i  }
+    }
+    private fun valueByMin(): Long {
+        return packets.minOf { it.getPacketValue() }
+    }
+    private fun valueByMax(): Long {
+        return packets.maxOf { it.getPacketValue() }
+    }
+    private fun valueByGreaterThan(): Long {
+        return if (packets[0].getPacketValue() > packets[1].getPacketValue()) 1 else 0
+    }
+    private fun valueByLessThan(): Long {
+        return if (packets[0].getPacketValue() < packets[1].getPacketValue()) 1 else 0
+    }
+    private fun valueByEquality(): Long {
+        return if (packets[0].getPacketValue() == packets[1].getPacketValue()) 1 else 0
+    }
+
     private fun extractLiteral(source: String): Pair<Long, String> {
         var payload = source
         var lastNum = false
